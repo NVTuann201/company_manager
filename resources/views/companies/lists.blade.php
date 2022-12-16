@@ -5,6 +5,13 @@
     @endif
     <h1>{{ $title }}</h1>
     <a href="{{ route('companies.add') }}" style="margin-bottom:20px; display:inline-block;">Thêm công ty</a>
+    <div>
+        <label for="">Tìm kiếm:</label>
+        <input type="search" name="search" placeholder="Tìm kiếm ...">
+    </div>
+    <div>
+        <label for="">Lọc:</label>
+    </div>
     <table border="1" width="50%">
         <thead>
             <tr>

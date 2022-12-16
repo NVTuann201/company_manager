@@ -2,72 +2,98 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Company;
+use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
-    private $company;
-    public function __construct()
-    {
-        $this->company = new Company();
-    }
-
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
-        $title = 'Danh sách công ty';
-        $companies = $this->company->getAllCompanies();
-        // dd(companies);
+        $data = Company::all();
 
-        return view('companies.lists', compact('title', 'companies'));
+        return response()->json($data);
     }
 
-    public function add()
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create(Request $request)
     {
-        $title = 'Thêm công ty mới';
+        $request->validate([
+            'name' => 'required',
+            'address' => 'required',
+        ]);
 
-        return view('companies.add', compact('title'));
+        $dataAdd = Company::create($request->all());
+        return response()->json($dataAdd);
     }
 
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
     {
-        $data = [
-            $request->fullname,
-            $request->address,
-        ];
-        // dd($data);
-        $this->company->addCompany($data);
+        // $request->validate([
+        //     $request->fullname,
+        //     $request->address,
+        // ]);
+        $dataAdd = Company::create($request->only('name', 'address'));
 
-        return redirect()->route('companies.index')->with('msg', 'Thêm công ty mới thành công');
+        return response()->json($dataAdd);
     }
 
-    public function edit(Request $request, $id)
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
     {
-        $title = 'Sửa thông tin công ty';
-        $data = $this->company->getCompany($id);
-        // dd($company);
-        $company = $data[0];
-        $request->session()->put('id', $id);
-
-        return view('companies.edit', compact('title', 'company'));
+        //
     }
 
-    public function update(Request $request)
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
     {
-        $id = session('id');
-        $data = [
-            $request->fullname,
-            $request->address,
-        ];
-        $this->company->updateCompany($data, $id);
-
-        return back()->with('msg', 'Cập nhật thành công');
+        //
     }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function destroy($id)
     {
-        $this->company->deleteCompany($id);
-
-        return redirect()->route('companies.index')->with('msg', 'Xoá thành công');
+        //
     }
 }

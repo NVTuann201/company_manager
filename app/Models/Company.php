@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 class Company extends Model
 {
     use HasFactory;
+    protected $table = 'companies';
     protected $fillable = [
         'id',
         'name',
@@ -28,7 +29,7 @@ class Company extends Model
     public function addCompany($data)
     {
         // dd($data);
-        DB::table('companies')->insert([
+        return DB::table($this->table)->insert([
             'name' => $data[0],
             'address' => $data[1],
         ]);
