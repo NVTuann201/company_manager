@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class CompanyController extends Controller
 {
@@ -12,9 +13,30 @@ class CompanyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = Company::all();
+        if ($request->search){
+            $data = Company::query()
+                ->where('name', 'like', '%'.$request->search.'%')
+                ->get();
+        // }
+        // else if ($request->created_at){
+        //     $data = Company::where('created_at', '>=',
+        //         Carbon::createFromDate(1975, 5, 21);)
+        //         ->where('created_at', '<=',
+        //         Carbon::createFromDate(2015, 5, 21);)
+        //     ->get();
+        }else if ($request->name){
+            $data = Company::query()
+                ->where('name', $request->name)
+                ->get();
+        }else if ($request->address){
+            $data = Company::query()
+                ->where('address', $request->address)
+                ->get();
+        }else{
+            $data = Company::all();
+        }
 
         return response()->json($data);
     }
@@ -83,7 +105,16 @@ class CompanyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // $company = Company::findOrFail($id);
+        // dd($request->address);
+        $data = Company::query()
+            ->where('id', $id)
+            ->update([
+                'name' => $request->name,
+                'address' => $request->address,
+            ]);
+        // dd($data);
+        return response()->json($data);
     }
 
     /**
@@ -94,6 +125,10 @@ class CompanyController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $result = Company::query()
+            ->where('id', $id)
+            ->delete();
+
+        return response()->json($result);
     }
 }
