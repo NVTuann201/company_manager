@@ -19,13 +19,12 @@ class CompanyController extends Controller
             $data = Company::query()
                 ->where('name', 'like', '%'.$request->search.'%')
                 ->get();
-        // }
-        // else if ($request->created_at){
-        //     $data = Company::where('created_at', '>=',
-        //         Carbon::createFromDate(1975, 5, 21);)
-        //         ->where('created_at', '<=',
-        //         Carbon::createFromDate(2015, 5, 21);)
-        //     ->get();
+        }
+        else if ($request->start_date){
+            $data = Company::query()
+                ->where('created_at', '>=', Carbon::createFromDate($request->start_date))
+                ->where('created_at', '<=', Carbon::createFromDate($request->end_date))
+                ->get();
         }else if ($request->name){
             $data = Company::query()
                 ->where('name', $request->name)
