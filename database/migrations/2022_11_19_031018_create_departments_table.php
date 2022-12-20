@@ -18,6 +18,7 @@ class CreateDepartmentsTable extends Migration
             $table->string('name');
             $table->integer('company_id');
             $table->foreign('company_id')->references('id')->on('companies');
+            $table->timestamps();
         });
     }
 
@@ -28,6 +29,9 @@ class CreateDepartmentsTable extends Migration
      */
     public function down()
     {
+        Schema::table('departments', function (Blueprint $table) {
+            $table->dropForeign('departments_company_id_foreign');
+        });
         Schema::dropIfExists('departments');
     }
 }

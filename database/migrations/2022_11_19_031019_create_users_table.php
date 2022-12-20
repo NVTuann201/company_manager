@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->integer('department_id');
             $table->foreign('department_id')->references('id')->on('departments');
+            $table->timestamps();
         });
     }
 
@@ -31,6 +32,9 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign('users_department_id_foreign');
+        });
         Schema::dropIfExists('users');
     }
 }

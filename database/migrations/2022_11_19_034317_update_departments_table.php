@@ -14,8 +14,8 @@ class UpdateDepartmentsTable extends Migration
     public function up()
     {
         Schema::table('departments', function (Blueprint $table) {
-            $table->integer('manager')->unsigned()->change();
-            $table->foreign('manager')->references('id')->on('users');
+            $table->integer('manager_id')->unsigned()->nullable();
+            $table->foreign('manager_id')->references('id')->on('users')->onDelete('set null');
         });
         //
     }
@@ -27,6 +27,11 @@ class UpdateDepartmentsTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('departments', function (Blueprint $table) {
+            $table->dropForeign('departments_manager_id_foreign');
+        });
+        Schema::table('departments', function (Blueprint $table) {
+            $table->dropColumn('manager_id');
+        });
     }
 }

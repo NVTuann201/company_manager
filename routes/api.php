@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\DepartmentController;
+use App\Models\Department;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,3 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('companies', CompanyController::class);
+Route::apiResource('departments', DepartmentController::class);

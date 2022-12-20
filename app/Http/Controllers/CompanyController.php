@@ -45,16 +45,6 @@ class CompanyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
-    {
-        $request->validate([
-            'name' => 'required',
-            'address' => 'required',
-        ]);
-
-        $dataAdd = Company::create($request->all());
-        return response()->json($dataAdd);
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -90,18 +80,7 @@ class CompanyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         // $company = Company::findOrFail($id);
