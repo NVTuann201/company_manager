@@ -9,8 +9,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Model
+class User extends Authenticatable
 {
+    use HasApiTokens, Notifiable, HasFactory;
     /**
      * The attributes that are mass assignable.
      *
@@ -38,12 +39,13 @@ class User extends Model
      *
      * @var array<string, string>
      */
-    protected $casts = [
-    ];
-    protected function departments () {
+    protected $casts = [];
+    protected function departments()
+    {
         return $this->belongsTo(Department::class);
     }
-    protected function roles () {
+    protected function roles()
+    {
         return $this->hasMany(Role::class);
     }
 }

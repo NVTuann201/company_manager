@@ -15,31 +15,37 @@ class CompanyController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->search){
+        if ($request->search) {
             $data = Company::query()
-                ->where('name', 'like', '%'.$request->search.'%')
+                ->where('name', 'like', '%' . $request->search . '%')
                 ->get();
-        }
-        else if ($request->start_date){
+        } else if ($request->start_date) {
             $data = Company::query()
                 ->where('created_at', '>=', Carbon::createFromDate($request->start_date))
                 ->where('created_at', '<=', Carbon::createFromDate($request->end_date))
                 ->get();
-        }else if ($request->name){
+        } else if ($request->name) {
             $data = Company::query()
                 ->where('name', $request->name)
                 ->get();
-        }else if ($request->address){
+        } else if ($request->address) {
             $data = Company::query()
                 ->where('address', $request->address)
                 ->get();
-        }else{
+        } else {
             $data = Company::all();
         }
 
         return response()->json($data);
     }
+    public function show($id)
+    {
+        $data = Company::query()
+            ->where('id', $id)
+            ->get();
 
+        return response()->json($data[0]);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -63,16 +69,6 @@ class CompanyController extends Controller
         return response()->json($dataAdd);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
